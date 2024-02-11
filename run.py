@@ -23,13 +23,15 @@ def place_ships_randomly(grid):
     for row, col in ship_locations:
         grid[row][col] = 'X'
 
-# Function to display both player's and computer's grids
-def display_grids():
+# Function to display both player's and computer's grids with hidden ships
+def display_grids_with_hidden_ships():
     print("Player's Grid:")
     for i in range(grid_size):
         for j in range(grid_size):
-            if player_grid[i][j] == 'X':
-                print('@', end=' ')
+            if player_grid[i][j] == '*' or (player_grid[i][j] == 'X' and revealed_player_grid[i][j] == 'X'):
+                print('*', end=' ')  # If player's ship is hit or revealed, show '*'
+            elif player_grid[i][j] == 'X':
+                print('@', end=' ')  # Show player's ships as '@'
             else:
                 print(revealed_player_grid[i][j], end=' ')
         print()
@@ -37,8 +39,15 @@ def display_grids():
     print("\nComputer's Grid:")
     for i in range(grid_size):
         for j in range(grid_size):
-            print(revealed_computer_grid[i][j], end=' ')
+            if revealed_computer_grid[i][j] == 'X':
+                print('*', end=' ')  # If computer's ship is hit, show '*'
+            else:
+                print(revealed_computer_grid[i][j], end=' ')
         print()
+
+
+
+
 
 def player_turn():
     """
@@ -90,6 +99,7 @@ def computer_turn():
             if player_grid[row][col] == 'X':
                 print("Computer hit!")
                 revealed_player_grid[row][col] = 'X'
+                player_grid[row][col] = 'X'  # Update player's grid
                 computer_score += 1
                 if computer_score == 4:
                     return 'computer'
@@ -102,20 +112,18 @@ def computer_turn():
 place_ships_randomly(player_grid)
 place_ships_randomly(computer_grid)
 
-# Print computer's grid (for troubleshooting purposes)
-print("\nComputer's Ship Locations:")
-for row in computer_grid:
-    print(" ".join(row))
-
-# Display both grids at the beginning of the game
-display_grids()
+# Display both grids with hidden ships at the beginning of the game
+display_grids_with_hidden_ships()
 
 # Game loop
 while True:
     # Player's turn
     result = player_turn()
     computer_turn()
-    display_grids()
+    print("\n\n")
+    display_grids_with_hidden_ships()
+    print(f"Player's Score: {player_score}")
+    print(f"Computer's Score: {computer_score}")
     if result == 'player':
         print("Congratulations! You win!")
         break
