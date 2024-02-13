@@ -58,8 +58,8 @@ def player_turn():
     while True:
         try:
             # Get input from the player for attacking the computer's grid
-            row = int(input(f"Enter the row to attack (0-{grid_size - 1}): "))
-            col = int(input(f"Enter the column to attack (0-{grid_size - 1}): "))
+            row = int(input(f"Enter the row to attack (0-{grid_size - 1}):\n "))
+            col = int(input(f"Enter the column to attack (0-{grid_size - 1}):\n "))
             
             # Check if the input coordinates are within the grid boundaries
             if 0 <= row < grid_size and 0 <= col < grid_size:
